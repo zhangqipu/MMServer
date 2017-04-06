@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yingjun.ssm.dao.PostDao">
+
+	<!-- ===================== Insert ===================== -->
+
+	<insert id="insert" parameterType="Post" useGeneratedKeys="true"
+		keyProperty="id">
+		<selectKey keyProperty="objectId" resultType="String" order="BEFORE">
+			select replace(uuid(),'-','') from dual
+		</selectKey>
+		insert into post (
+		object_id,
+		title,
+		content,
+		read_num,
+		period,
+		photo,
+		user_id
+		)
+		values (
+		#{objectId,jdbcType=VARCHAR},
+		#{title,jdbcType=VARCHAR},
+		#{content,jdbcType=VARCHAR},
+		#{readNum,jdbcType=INTEGER},
+		#{period,jdbcType=VARCHAR},
+		#{photo,jdbcType=VARCHAR},
+		#{userId,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- ===================== Select ===================== -->
+
+	<select id="getOne" parameterType="String" resultType="Post">
+		select
+		object_id,
+		title,
+		content,
+		read_num,
+		period,
+		photo
+		from post
+		where object_id = #{objectId}
+	</select>
+
+	<select id="getList" parameterType="Post" resultType="Post">
+		select
+		object_id,
+		title,
+		content,
+		read_num,
+		period,
+		photo,
+		user_id
+		from post
+		where user_id = #{userId}
+		<if test="page != null">
+			LIMIT #{page.offset}, #{page.limit}
+		</if>
+	</select>
+
+</mapper>
+

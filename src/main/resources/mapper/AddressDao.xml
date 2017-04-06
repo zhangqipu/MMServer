@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yingjun.ssm.dao.AddressDao">
+
+	<!-- ===================== Insert ===================== -->
+
+	<insert id="insert" parameterType="Address" useGeneratedKeys="true"
+		keyProperty="id">
+		<selectKey keyProperty="objectId" resultType="String" order="BEFORE">
+			select replace(uuid(),'-','') from dual
+		</selectKey>
+		insert into address (
+		object_id,
+		name,
+		phone,
+		area,
+		address,
+		user_id
+		)
+		values (
+		#{objectId,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR},
+		#{area,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{userId,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- ===================== Select ===================== -->
+
+	<select id="getOne" parameterType="String" resultType="Address">
+		select
+		object_id,
+		name,
+		phone,
+		area,
+		address
+		from address
+		where
+		object_id = #{objectId}
+	</select>
+
+	<select id="getList" parameterType="Address" resultType="Address">
+		select
+		object_id,
+		name,
+		phone,
+		area,
+		address,
+		user_id
+		from address
+		where user_id = #{userId}
+	</select>
+
+</mapper>
+
